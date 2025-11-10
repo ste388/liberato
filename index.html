@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioco di Movimento</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Il mondo e il giocatore ora sono sullo stesso livello -->
+        <div id="world"></div>
+        <div id="player"></div>
+    </div>
+    <div id="ui-container">
+        <button id="roll-dice-btn">Lancia il Dado</button>
+        <div id="info-display">
+            <p>Tiro del dado: <span id="dice-result">-</span></p>
+            <p>Movimenti rimasti: <span id="moves-left">-</span></p>
+        </div>
+        <div id="instructions">
+            Usa i tasti freccia per muoverti dopo aver lanciato il dado.
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+
+</html>

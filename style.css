@@ -1,0 +1,78 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Impedisce lo scroll della pagina */
+    font-family: sans-serif;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #333; /* Sfondo neutro scuro */
+}
+
+#world {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* La griglia è creata con un background a ripetizione */
+    background-image:
+        linear-gradient(to right, #444 1px, transparent 1px),
+        linear-gradient(to bottom, #444 1px, transparent 1px);
+    background-size: 50px 50px;
+    /* La transizione rende lo scorrimento fluido */
+    transition: transform 0.3s linear;
+}
+
+#player {
+    position: absolute;
+    /* Posizionato al centro dello schermo */
+    top: calc(50vh - 25px);
+    left: calc(50vw - 25px);
+    width: 48px;
+    height: 48px;
+    background-color: #00bcd4; /* Un colore visibile per il giocatore */
+    border: 1px solid #fff;
+    box-sizing: border-box;
+    /* La transizione serve per debug, il giocatore resta fermo */
+    transition: transform 0.2s ease-out;
+}
+
+#ui-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 15px;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+#roll-dice-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#roll-dice-btn:disabled {
+    cursor: not-allowed;
+    background-color: #999;
+}
+
+#instructions {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 10px;
+}
