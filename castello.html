@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Castello</title>
+    <link rel="stylesheet" href="castello.css">
+</head>
+<body>
+    <div class="main-container">
+        <h1>Castello</h1>
+        <div class="menu">
+            <button id="open-taverna-btn">Taverna</button>
+            <button id="open-armeria-btn">Armeria</button>
+            <button id="start-mission-btn">Avvia Missione</button>
+        </div>
+    </div>
+
+    <div id="taverna-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Taverna - Assolda Avventurieri</h2>
+            <div id="hero-selection-grid"></div>
+            <h3>Personaggi Assoldati</h3>
+            <div id="hired-party-list"></div>
+        </div>
+    </div>
+
+    <script src="castello.js"></script>
+</body>
+</html>

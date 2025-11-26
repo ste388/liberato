@@ -1,28 +1,205 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gioco di Movimento</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dungeon Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="game-container">
-        <!-- Il mondo e il giocatore ora sono sullo stesso livello -->
-        <div id="world"></div>
-        <div id="player"></div>
-    </div>
-    <div id="ui-container">
-        <button id="roll-dice-btn">Lancia il Dado</button>
-        <div id="info-display">
-            <p>Tiro del dado: <span id="dice-result">-</span></p>
-            <p>Movimenti rimasti: <span id="moves-left">-</span></p>
-        </div>
-        <div id="instructions">
-            Usa i tasti freccia per muoverti dopo aver lanciato il dado.
-        </div>
-    </div>
-    <script src="game.js"></script>
-</body>
+<body data-view="editor">
 
+  <!-- VISTA EDITOR -->
+  <div id="editor-view">
+    <div id="editor-ui">
+      <button class="tool-btn active" data-tool="path">Sentiero</button>
+      <button class="tool-btn" data-tool="wall">Muro</button>
+      <button class="tool-btn" data-tool="manage-objects">Sposta/Rimuovi</button>
+      <button id="export-map-btn" class="tool-btn">Esporta Mappa</button>
+      <button id="go-to-castle-btn" class="tool-btn" style="margin-left:auto; background:#a33;">Vai al Castello</button>
+    </div>
+
+    <div id="palette-container">
+      <div class="palette-section">
+        <h3>Porte</h3>
+        <div class="palette-item" draggable="true"
+             data-type="porta1" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/porta1.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="porta2" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/porta2.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="porta3" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/porta3.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="portaGemma" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/portaGemma.png');"></div>
+      </div>
+
+      <div class="palette-section">
+        <h3>Oggetti</h3>
+        <!-- Bauli 1-8 (tutti bloccanti) -->
+        <div class="palette-item" draggable="true"
+             data-type="baule1" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/baule1.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="baule2" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/baule2.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="baule3" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/baule3.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="baule4" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/baule4.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="baule5" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/baule5.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="baule6" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/baule6.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="baule7" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/baule7.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="baule8" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/baule8.png');"></div>
+
+        <!-- FONTANA 2x2 (Bloccante) -->
+        <div class="palette-item" draggable="true"
+             data-type="fontana" data-category="object" data-blocking="true" data-width="2" data-height="2"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/fontana.png');"></div>
+
+        <h3>Decori</h3>
+        <!-- NUOVI ELEMENTI RICHIESTI -->
+        <!-- Colonna 1 (Bloccante) -->
+        <div class="palette-item" draggable="true"
+             data-type="colonna1" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/colonna1.png');"></div>
+        
+        <!-- Colonna 2 (Bloccante) -->
+        <div class="palette-item" draggable="true"
+             data-type="colonna2" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/colonna2.png');"></div>
+        
+        <!-- Obelisco (Bloccante) -->
+        <div class="palette-item" draggable="true"
+             data-type="obelisco" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/obelisco.png');"></div>
+        
+        <!-- Oro (Non bloccante) -->
+        <div class="palette-item" draggable="true"
+             data-type="oro" data-category="object"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/oro.png');"></div>
+        
+        <!-- Sabbia 1 (Non bloccante) -->
+        <div class="palette-item" draggable="true"
+             data-type="sabbia1" data-category="object"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/sabbia1.png');"></div>
+
+        <!-- Decoro generico -->
+        <div class="palette-item" draggable="true"
+             data-type="decoro1" data-category="object"
+             style="background-image: url('https://ste388.github.io/liberato/oggetti/decoration1.png');"></div>
+
+        <h3>Cespugli</h3>
+        <div class="palette-item" draggable="true"
+             data-type="cespuglio1" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/pavimento/cespuglio1.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="cespuglio2" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/pavimento/cespuglio2.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="cespuglio3" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/pavimento/cespuglio3.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="cespuglio4" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/pavimento/cespuglio4.png');"></div>
+        <div class="palette-item" draggable="true"
+             data-type="cespuglio5" data-category="object" data-blocking="true"
+             style="background-image: url('https://ste388.github.io/liberato/pavimento/cespuglio5.png');"></div>
+      </div>
+
+      <div class="palette-section">
+        <h3>Nemici</h3>
+        <div class="palette-item" draggable="true" data-type="orchetto1" data-category="enemy" style="background-image: url('https://ste388.github.io/liberato/Nemici/orchetto1.png');"></div>
+        <div class="palette-item" draggable="true" data-type="gnomo1" data-category="enemy" style="background-image: url('https://ste388.github.io/liberato/Nemici/gnomo1.png');"></div>
+        <div class="palette-item" draggable="true" data-type="miliziano1" data-category="enemy" style="background-image: url('https://ste388.github.io/liberato/Nemici/miliziano1.png');"></div>
+        <div class="palette-item" draggable="true" data-type="troll1" data-category="enemy" style="background-image: url('https://ste388.github.io/liberato/Nemici/troll1.png');"></div>
+        <div class="palette-item" draggable="true" data-type="stregone1" data-category="enemy" style="background-image: url('https://ste388.github.io/liberato/Nemici/stregone1.png');"></div>
+        <div class="palette-item" draggable="true" data-type="goblin1" data-category="enemy" style="background-image: url('https://ste388.github.io/liberato/Nemici/goblin1.png');"></div>
+        <div class="palette-item" draggable="true" data-type="guerr_goblin1" data-category="enemy" style="background-image: url('https://ste388.github.io/liberato/Nemici/Guerr_goblin1.png');"></div>
+        <div class="palette-item" draggable="true" data-type="morte" data-category="enemy" style="background-image: url('https://ste388.github.io/liberato/Nemici/morte1.png');"></div>
+      </div>
+    </div>
+
+    <div id="world-container">
+      <div id="world"></div>
+    </div>
+  </div>
+
+  <!-- VISTA CASTELLO -->
+  <div id="castle-view">
+    <div class="castle-overlay" style="background:rgba(0,0,0,0.8); padding:40px; border-radius:10px; text-align:center;">
+      <h1>Il Castello</h1>
+      <div class="castle-menu" style="margin-top:30px;">
+        <button id="open-taverna-btn" class="tool-btn" style="font-size:1.2em;">Taverna (Assolda)</button>
+        <button id="open-armeria-btn" class="tool-btn" style="font-size:1.2em;">Armeria</button>
+        <button id="start-mission-btn" class="tool-btn" style="font-size:1.2em; background:#080;">Parti per la Missione</button>
+      </div>
+      <h3 style="margin-top: 30px;">Gruppo Attuale</h3>
+      <div id="hired-party-list"></div>
+    </div>
+    <button id="return-to-editor-from-castle" class="tool-btn" style="position:fixed; bottom:20px; left:20px;" onclick="location.reload()">Torna all'Editor</button>
+  </div>
+
+  <!-- VISTA GIOCO -->
+  <div id="game-view">
+    <div id="game-world"></div>
+
+    <!-- MINIMAPPA - SINISTRA IN ALTO -->
+    <div id="minimap">
+      <canvas id="minimap-canvas" width="200" height="266"></canvas>
+    </div>
+
+    <!-- PANNELLO CARATTERISTICHE - SOTTO MINIMAPPA -->
+    <div id="game-ui">
+      <h3 id="hero-name">Eroe</h3>
+      <select id="hero-selector"></select>
+      <div id="hero-hp">PF: -/-</div>
+      <div id="hero-attack">Attacco: -</div>
+      <div id="hero-defense">Difesa: -</div>
+      <div id="hero-shield">Scudo: -</div>
+      
+      <!-- BOTTONE INVENTARIO CON ICONA -->
+      <button id="inventory-btn">
+        <img src="https://ste388.github.io/liberato/oggetti/inventario.png" alt="Inventario">
+        <span>Inventario</span>
+      </button>
+    </div>
+
+    <!-- BOTTONE ESCI - DESTRA IN ALTO -->
+    <button id="return-to-editor-btn">Esci</button>
+
+    <div id="combat-message"></div>
+  </div>
+
+  <!-- MODALS -->
+  <div id="export-modal" class="modal"><div class="modal-content"><span class="close-btn" id="close-modal-btn">&times;</span><h2>Dati Mappa</h2><textarea id="map-output-textarea" style="width:100%; height:300px; background:#111; color:#0f0;"></textarea></div></div>
+  
+  <div id="taverna-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Taverna</h2>
+      <div id="hero-selection-grid"></div>
+      <hr style="margin: 20px 0; border: 0; border-top: 1px solid #555;">
+      <h3>Gruppo Selezionato</h3>
+      <div id="hired-party-list-modal"></div>
+    </div>
+  </div>
+  
+  <div id="inventory-modal" class="modal"><div class="modal-content"><span class="close-btn" id="close-inventory-btn">&times;</span><h2 id="inventory-title">Inventario</h2><div id="wallet-display" style="color:gold; font-size:1.2em; margin:10px 0;">Monete: 0</div><div id="inventory-grid"></div></div></div>
+  
+  <div id="chest-modal" class="modal"><div class="modal-content" style="text-align:center;"><h2 style="color:gold;">Tesoro!</h2><div id="chest-message" style="font-size:1.2em; margin:20px 0;"></div><button id="close-chest-modal-btn" class="tool-btn">Chiudi</button></div></div>
+
+  <script src="game.js"></script>
+</body>
 </html>
